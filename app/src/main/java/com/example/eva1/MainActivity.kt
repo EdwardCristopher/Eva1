@@ -1,5 +1,6 @@
 package com.example.eva1
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -9,16 +10,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.widget.Toast
 
-
-
 class MainActivity : AppCompatActivity() {
-    lateinit var usernameInput: EditText
-    lateinit var passwordInput: EditText
-    lateinit var loginBtn: Button
 
+    lateinit var usernameInput : EditText
+    lateinit var passwordInput : EditText
+    lateinit var loginBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -34,11 +34,21 @@ class MainActivity : AppCompatActivity() {
             val username = usernameInput.text.toString()
             val password = passwordInput.text.toString()
 
-            Log.i("Prueba", "Usuarios:  $username y Clave es $password")
-            Toast.makeText(this, "Hola , $username", Toast.LENGTH_LONG).show()
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Por favor, ingresa tanto el nombre de usuario como la contraseña", Toast.LENGTH_LONG).show()
+            } else {
+                Log.i("Prueba", "Usuario:  $username y Clave es $password")
+                Toast.makeText(this, "Hola, $username", Toast.LENGTH_LONG).show()
 
+                // Crear un Intent para iniciar la WelcomeActivity
+                val intent = Intent(this, WelcomeActivity::class.java)
+
+                // Pasar el nombre de usuario a la WelcomeActivity
+                intent.putExtra("USERNAME", username)
+
+                // Iniciar la nueva actividad
+                startActivity(intent)
+            }
         }
-
-
     }
 }
